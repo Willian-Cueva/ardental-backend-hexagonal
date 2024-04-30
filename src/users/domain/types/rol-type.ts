@@ -1,0 +1,1 @@
+export type RolType = "admin" | "not-authorized" | "super-administrer"

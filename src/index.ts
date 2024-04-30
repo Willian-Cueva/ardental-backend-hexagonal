@@ -1,19 +1,14 @@
-import express from "express";
-import path from "path";
-import { ConnectToNodeServerAdapter } from "./repository/infraestructure/adapters/drivers/connect-to-node-server-adapter";
+import "./core/config/load-env-vars";
+import "./core/config/database/database";
 
-const app = express();
-const PORT = 3001;
+import { Server } from "./server";
 
-const connectToServer = new ConnectToNodeServerAdapter();
-connectToServer.connect();
 
-app.use(express.json({limit: "50mb"}));
-app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+new Server().start().catch(handleError);
 
-// app.use("/api/users",);
-// app.use("/api/patients",);
+function handleError(error: unknown) {
+  console.error(error);
+  process.exit(1);
+}
 
-app.use(express.static(path.join(__dirname, "..", "assets")));
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+process.on("uncaughtException", handleError);
