@@ -1,15 +1,15 @@
 import { User } from "../../domain/user";
 import { RegisterType } from "./types/register-type";
-import { Adapter, UserAndAccount } from "../adapter/adapter";
 import { Request, Response } from "express";
-import { Auth } from "@users/app/auth";
-import { Account } from "@src/users/domain/account";
-import UserModel from "@src/core/config/database/models/account/user";
-import AccountModel from "@core/config/database/models/account/account";
+import { Auth } from "../../app/auth";
+import { Account } from "../../domain/account";
+import UserModel from "../../../core/config/database/models/account/user";
+import AccountModel from "../../../core/config/database/models/account/account";
 import { Types } from "mongoose";
 import { ResponseServerType } from "./types/response-server-type";
 import { LoginType } from "./types/login-type";
-import { UserSessionType } from "@src/users/domain/types/user-session-type";
+import { UserSessionType } from "../../domain/types/user-session-type";
+import { Adapter, UserAndAccount } from "../adapter/adapter";
 
 class UserController {
   async register(req: Request, res: Response) {
@@ -17,20 +17,32 @@ class UserController {
       const registerType: RegisterType = req.body;
       const userAndAccount: UserAndAccount =
         Adapter.registerToUserAndAccount(registerType);
-      const auth: Auth = new Auth(
-        new Account(userAndAccount.account, registerType.repeatPassword),
-        new User(userAndAccount.user)
+      const localUser: User = new User(userAndAccount.user);
+      const localAccount: Account = new Account(
+        userAndAccount.account,
+        registerType.repeatPassword
       );
-      await auth.register();
 
-      const user = new UserModel(auth.user);
+      const auth: Auth = new Auth(localAccount, localUser);
+
+
+      const accountsExternal = await AccountModel.find();
+      const usersExternal = await UserModel.find();
+      const accountsLocal = Adapter.accountsDBToAccounts(accountsExternal);
+      const usersLocal = Adapter.usersDBToUsers(usersExternal);
+      await auth.registerApp(accountsLocal, usersLocal);
+
+      const user = new UserModel(auth.user.getUser());
       let user_id: Types.ObjectId | null = null;
       await user.save().then((pt) => {
         user_id = pt._id;
       });
       if (user_id === null) throw new Error("Error al registrar el usuario");
 
-      const account = new AccountModel({ ...auth.account, user: user_id });
+      const account = new AccountModel({
+        ...auth.account.getAccount(),
+        user: user_id,
+      });
       await account.save();
       const response: ResponseServerType = {
         status: "ok",
@@ -38,8 +50,10 @@ class UserController {
       };
       res.json(response);
     } catch (error) {
+      console.log(error);
+
       const response: ResponseServerType = {
-        status: "Ocurrió un error al registrar usuario",
+        status: "Ocurrió un error al registrar usuario debido a: " + error,
         data: null,
       };
       res.json(response);
@@ -49,7 +63,11 @@ class UserController {
   async login(req: Request, res: Response) {
     try {
       const loginType: LoginType = req.body;
+      console.log(loginType);
+      
       const accountsExternal = await AccountModel.find();
+      console.log("accountsExternal", accountsExternal);
+      
       const accountExternal = accountsExternal.find(
         (account) => account.email === loginType.email
       );
@@ -63,6 +81,7 @@ class UserController {
       const usersExternal = await UserModel.find();
 
       const accountsLocal = Adapter.accountsDBToAccounts(accountsExternal);
+
       const usersLocal = Adapter.usersDBToUsers(usersExternal);
 
       const accountLocal: Account = new Account(loginType, null);
@@ -71,21 +90,22 @@ class UserController {
       const auth: Auth = new Auth(accountLocal, userLocal);
       const session: UserSessionType = await auth.loginApp(
         accountsLocal,
-        usersLocal,
-        loginType.password
+        usersLocal
       );
 
-      const response: ResponseServerType = {
+      const data: ResponseServerType = {
         status: "ok",
         data: session,
       };
-      res.json(response);
+      res.json(data);
     } catch (error) {
-      const response: ResponseServerType = {
-        status: "No se pudo registrar el usuario debido a " + error,
+      console.log(error);
+
+      const data: ResponseServerType = {
+        status: "No se pudo loguear el usuario debido a " + error,
         data: null,
       };
-      res.json(response);
+      res.json(data);
     }
   }
 }

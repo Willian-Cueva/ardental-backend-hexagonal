@@ -1,0 +1,1 @@
+export type MaritalStatusType = "Soltero/a" | "Casado/a" | "Divorciado/a" | "Viudo/a"

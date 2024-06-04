@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 
 export class Account implements IAuth {
   private account: AccountType;
-  private repeatPassword: string|null
+  private repeatPassword: string|null;
   constructor(account: AccountType, repeatPassword: string|null) {
     this.account = account;
     this.repeatPassword = repeatPassword;
@@ -36,11 +36,12 @@ export class Account implements IAuth {
   async register(): Promise<void> {
     if(!this.repeatPassword||this.repeatPassword===null){
       throw new Error("RepeatPassword is required");
-    }
-    if (this.account.email !== this.repeatPassword) {
+    }    
+    if (this.account.password !== this.repeatPassword) {
       throw new Error("The passwords do not match");
     }
-
+    this.save();
+    
     bcrypt
       .genSalt(10)
       .then((salts) => {
@@ -52,7 +53,7 @@ export class Account implements IAuth {
           .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
-    this.save();
+    
     return;
   }
 

@@ -3,7 +3,7 @@ import path from "path";
 import cors from "cors"
 import { config } from "./core/config/config";
 import { userRouter } from "./users/infraestructure/rest-api/user-router";
-// import morgan from "morgan";
+import morgan from "morgan";
 
 export class Server {
   private readonly app: Express;
@@ -22,7 +22,7 @@ export class Server {
       next();
     });
 
-    // this.app.use(morgan("dev"));
+    this.app.use(morgan("dev"));
     this.app.use(express.json({ limit: "50mb" }));
     this.app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 

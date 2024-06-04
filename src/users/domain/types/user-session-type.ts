@@ -4,5 +4,5 @@ import { UserSchemaType } from "./user-schema-type";
 export type UserSessionType = Pick<UserSchemaType, "rol" | "sex"> &
   Pick<AccountType, "email"> & {
     fullname: string;
-    token?: string;
+    token: string | false;
   };

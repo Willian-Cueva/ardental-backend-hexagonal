@@ -54,6 +54,7 @@ export class User implements IUser,IAuth,ICheck {
       throw new Error("El nombre es obligatorio y debe tener al menos 2 letras alfabéticas");
       
     }
+    
     if (!this.user.dni || !Helpers.dniValidate(this.user.dni))
       throw new Error(
         "La cédula del usuario debe ser de 10 dígitos y ser un número de cedula válido"

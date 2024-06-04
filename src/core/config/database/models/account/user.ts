@@ -1,35 +1,39 @@
+import mongoose, { Schema, Document, Model } from "mongoose";
 
-import mongoose,{Schema,Document} from "mongoose";
-
-export interface IUser extends Document{
+export interface IUser extends Document {
   name: string;
   lastname: string;
   dni: string;
   dateBorn: string;
   phone: string;
   rol: string;
-  changePassword: Boolean;
+  changePassword: boolean;
   sex: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-const userSchema = new Schema({
-  name: String,
-  lastname: String,
-  dni: String,
-  dateBorn: String,
-  phone: String,
-  rol: String,
-  changePassword: Boolean,
-  sex: String,
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
-});
+const userSchema: Schema<IUser> = new Schema(
+  {
+    name: { type: Schema.Types.String, required: true },
+    lastname: { type: Schema.Types.String, required: true },
+    dni: { type: Schema.Types.String, required: true, unique: true },
+    dateBorn: { type: Schema.Types.String, required: true },
+    phone: { type: Schema.Types.String, required: true },
+    rol: { type: Schema.Types.String, required: true },
+    changePassword: { type: Schema.Types.Boolean, default: false },
+    sex: { type: Schema.Types.String, required: true },
+    createdAt: { type: Schema.Types.Date, default: Date.now },
+    updatedAt: { type: Schema.Types.Date, default: Date.now },
+  },
+  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+);
 
 userSchema.pre<IUser>("save", function (next) {
   this.updatedAt = new Date();
   next();
 });
 
-export default mongoose.model<IUser>("User", userSchema);
+const User: Model<IUser> = mongoose.model<IUser>("User", userSchema);
+
+export default User;

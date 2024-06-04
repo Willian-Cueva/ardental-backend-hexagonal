@@ -1,4 +1,4 @@
-import { SexType } from "@src/users/domain/types/sex-type"
+import { SexType } from "@/users/domain/types/sex-type"
 
 export type RegisterType = {
   name:string

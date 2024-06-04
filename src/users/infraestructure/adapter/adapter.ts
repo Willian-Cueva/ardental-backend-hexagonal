@@ -1,12 +1,12 @@
-import { UserType } from "@users/domain/types/user-type";
-import { SexType } from "@src/users/domain/types/sex-type";
-import { AccountType } from "@src/users/domain/types/account-type";
+import { UserType } from "@/users/domain/types/user-type";
+import { SexType } from "@/users/domain/types/sex-type";
+import { AccountType } from "@/users/domain/types/account-type";
 import { RegisterType } from "../rest-api/types/register-type";
-import { IAccount } from "@core/config/database/models/account/account";
+import { IAccount } from "@/core/config/database/models/account/account";
 import { Account } from "../../domain/account";
-import { IUser } from "@core/config/database/models/account/user";
-import { RolType } from "@src/users/domain/types/rol-type";
-import { User } from "@users/domain/user";
+import { IUser } from "@/core/config/database/models/account/user";
+import { RolType } from "@/users/domain/types/rol-type";
+import { User } from "../../domain/user";
 
 export type UserAndAccount = { user: UserType; account: AccountType };
 export class Adapter {
@@ -48,19 +48,6 @@ export class Adapter {
   }
 
   static userDBToUser(userDB: IUser): User {
-    if (
-      !userDB ||
-      !userDB.name ||
-      !userDB.lastname ||
-      !userDB.dni ||
-      !userDB.dateBorn ||
-      !userDB.phone ||
-      !userDB.sex ||
-      !userDB.changePassword ||
-      !userDB.rol
-    ) {
-      throw new Error("User data is incomplete");
-    }
     // Verificar si el sexo es un valor válido
     if (!["Masculino", "Femenino", "Otro"].includes(userDB.sex)) {
       throw new Error("Invalid sex type");
