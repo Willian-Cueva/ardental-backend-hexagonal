@@ -1,4 +1,4 @@
-import { ICrud } from "./dependencies/icrud";
+import { ICrud } from "./dependencies/ICrud";
 import { PersonalHistoryType } from "./types/personal-history-type";
 
 export class PersonalHistory implements ICrud<PersonalHistoryType> {
