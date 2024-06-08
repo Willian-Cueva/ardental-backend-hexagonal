@@ -4,6 +4,7 @@ import cors from "cors"
 import { config } from "./core/config/config";
 import { userRouter } from "./users/infraestructure/rest-api/user-router";
 import morgan from "morgan";
+import { patientsRouter } from "./patients/infraestructure/rest-api/patients-router";
 
 export class Server {
   private readonly app: Express;
@@ -29,6 +30,7 @@ export class Server {
     //routes
     const api = "/api";
     this.app.use(`${api}/users`, userRouter);
+    this.app.use(`${api}/patients`, patientsRouter);
 
 
     this.app.use(express.static(path.join(__dirname, "..", "assets")));

@@ -9,7 +9,8 @@ export class MedicalAppointment implements ICrud<MedicalAppointmentType> {
     this.medicalAppointment = medicalAppointment;
   }
 
-  getMedicalAppointmentType(): MedicalAppointmentType | null {
+  getMedicalAppointmentType(): MedicalAppointmentType {
+    if (!this.medicalAppointment) throw new Error("ClinicalSigns not found");
     return this.medicalAppointment;
   }
 

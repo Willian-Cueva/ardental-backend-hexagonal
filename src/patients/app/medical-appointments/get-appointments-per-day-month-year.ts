@@ -20,15 +20,30 @@ export class GetAppointmentsPerDayMonthYear {
   }
 
   async run(): Promise<MedicalAppointment[]> {
+    console.log("Fecha: ", this.day, this.month, this.year);
+
     const getAllAppointments = new GetAllMedicalAppointments(
       this.allAppointments
     );
     const listFillterAppointments = await getAllAppointments.run();
-    return listFillterAppointments.filter(
-      (appointment) =>
+    const medicalAppointmentResult: MedicalAppointment[] = [];
+
+    listFillterAppointments.forEach((appointment) => {
+      console.log(
+        "Fecha appointment: ",
+        appointment.getDay(),
+        appointment.getMonth(),
+        appointment.getYear()
+      );
+      if (
         appointment.getDay() === this.day &&
         appointment.getMonth() === this.month &&
         appointment.getYear() === this.year
-    );
+      ) {
+        medicalAppointmentResult.push(appointment);
+      }
+    });
+
+    return medicalAppointmentResult;
   }
 }

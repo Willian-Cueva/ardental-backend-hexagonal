@@ -8,7 +8,7 @@ export interface IPatient extends Document{
   direction: string;
   maritalStatus: string;
   sex: string;
-  dateBorn: Date;
+  dateBorn: string;
   reason: string;
   version: number;
   createdAt: Date;
@@ -24,7 +24,7 @@ const patientSchema: Schema<IPatient> = new Schema(
     direction: { type: Schema.Types.String, required: true },
     maritalStatus: { type: Schema.Types.String, required: true },
     sex: { type: Schema.Types.String, required: true },
-    dateBorn: { type: Schema.Types.Date, required: true },
+    dateBorn: { type: Schema.Types.String, required: true },
     reason: { type: Schema.Types.String, required: true },
     version: { type: Schema.Types.Number, required: true },
     createdAt: { type: Schema.Types.Date, default: Date.now },

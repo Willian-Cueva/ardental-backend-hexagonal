@@ -1,4 +1,4 @@
-import { Helpers } from "@/users/domain/helpers/helpers";
+import { Helpers } from "../../users/domain/helpers/helpers";
 import { PatientType } from "./types/patient-type";
 import { ICrud } from "./dependencies/ICrud";
 
@@ -7,6 +7,11 @@ export class Patient implements ICrud<PatientType> {
 
   constructor(patient: PatientType) {
     this.patient = patient;
+  }
+
+  getPatientType():PatientType{
+    if(!this.patient) throw new Error('Patient not found')
+    return this.patient
   }
 
   async create(): Promise<PatientType> {
@@ -41,8 +46,8 @@ export class Patient implements ICrud<PatientType> {
     if(!this.patient.dni || !Helpers.dniValidate(this.patient.dni)) {
       throw new Error('Debe ingresar una cedula válida y de 10 dígitos');
     }
-    if(!this.patient.phone || !Helpers.phoneValidate(this.patient.phone)) {
-      throw new Error('El nómero de telefónico debe ser de 10 dígitos');
-    }
+    // if(!this.patient.phone || !Helpers.phoneValidate(this.patient.phone)) {
+    //   throw new Error('El número de telefónico debe ser de 10 dígitos');
+    // }
   }
 }
