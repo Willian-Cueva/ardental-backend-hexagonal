@@ -7,7 +7,7 @@
     "start": "ts-node src/index.ts",
     "dev": "ts-node-dev src/index.ts",
     "tsc": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "artillery run get_patients.yml"
   },
   "keywords": [],
   "author": "",

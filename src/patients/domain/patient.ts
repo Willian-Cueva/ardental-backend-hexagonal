@@ -46,8 +46,5 @@ export class Patient implements ICrud<PatientType> {
     if(!this.patient.dni || !Helpers.dniValidate(this.patient.dni)) {
       throw new Error('Debe ingresar una cedula válida y de 10 dígitos');
     }
-    // if(!this.patient.phone || !Helpers.phoneValidate(this.patient.phone)) {
-    //   throw new Error('El número de telefónico debe ser de 10 dígitos');
-    // }
   }
 }
