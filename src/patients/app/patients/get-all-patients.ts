@@ -1,19 +1,10 @@
 import { Patient } from "../../domain/patient";
-import { PatientType } from "../../domain/types/patient-type";
+import { IPatientRepository } from "../../domain/repositories/ipatient_repository";
 
-export class GetAllPatients{
-  private patients: Patient[];
-  constructor(patients: Patient[]) {
-    this.patients = patients;
-  }
+export class GetAllPatients {
+  constructor(private patientRepository: IPatientRepository) {}
 
   async run(): Promise<Patient[]> {
-    if(!this.patients) throw new Error('Patients not found');
-    const patients: Patient[] = [];
-    this.patients.forEach(async (patient) => {
-      const patientType: PatientType = await patient.read();
-      patients.push(new Patient(patientType));
-    });
-    return patients;
+    return await this.patientRepository.findAll();
   }
 }

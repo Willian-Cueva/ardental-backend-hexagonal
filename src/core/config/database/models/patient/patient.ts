@@ -38,6 +38,6 @@ patientSchema.pre<IPatient>("save", function (next) {
   next();
 });
 
-const Patient: Model<IPatient> = mongoose.model<IPatient>("Patient", patientSchema);
+const PatientModel: Model<IPatient> = mongoose.model<IPatient>("Patient", patientSchema);
 
-export default Patient;
+export default PatientModel;

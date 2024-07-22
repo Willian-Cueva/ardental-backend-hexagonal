@@ -2,7 +2,7 @@ import express, { Express } from "express";
 import path from "path";
 import cors from "cors"
 import { config } from "./core/config/config";
-import { userRouter } from "./users/infraestructure/rest-api/user-router";
+// import { userRouter } from "./users/infraestructure/rest-api/user-router";
 import morgan from "morgan";
 import { patientsRouter } from "./patients/infraestructure/rest-api/patients-router";
 
@@ -29,7 +29,7 @@ export class Server {
 
     //routes
     const api = "/api";
-    this.app.use(`${api}/users`, userRouter);
+    // this.app.use(`${api}/users`, userRouter);
     this.app.use(`${api}/patients`, patientsRouter);
 
 

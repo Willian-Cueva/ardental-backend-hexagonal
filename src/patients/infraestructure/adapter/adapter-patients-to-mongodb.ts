@@ -1,40 +1,70 @@
 import { IPatient } from "@/core/config/database/models/patient/patient";
 import { Patient } from "../../domain/patient";
 import { PatientType } from "../../domain/types/patient-type";
-export class AdapterPatientsToMongoDB {	
+export class AdapterPatientsToMongoDB {
+  static patientModelToPatientType(patient: IPatient): PatientType {
+    return {
+      names: patient.names,
+      profession: patient.profession,
+      dni: patient.dni,
+      phone: patient.phone,
+      dateBorn: patient.dateBorn,
+      direction: patient.direction,
+      maritalStatus: patient.maritalStatus,
+      sex: patient.sex,
+      reason: patient.reason,
+      version: patient.version,
+    } as PatientType;
+  }
   static patientTypeToPatientModel(patientType: PatientType): IPatient {
-    const patientModel: IPatient = {} as IPatient;
-    patientModel.names = patientType.names;
-    patientModel.profession = patientType.profession;
-    patientModel.dni = patientType.dni;
-    patientModel.phone = patientType.phone;
-    patientModel.dateBorn = patientType.dateBorn;
-    patientModel.direction = patientType.direction;
-    patientModel.maritalStatus = patientType.maritalStatus;
-    patientModel.sex = patientType.sex;
-    patientModel.reason = patientType.reason;
-    patientModel.version = patientType.version;
-    return patientModel;
+    return {
+      names: patientType.names,
+      profession: patientType.profession,
+      dni: patientType.dni,
+      phone: patientType.phone,
+      dateBorn: patientType.dateBorn,
+      direction: patientType.direction,
+      maritalStatus: patientType.maritalStatus,
+      sex: patientType.sex,
+      reason: patientType.reason,
+      version: patientType.version,
+    } as IPatient;
   }
 
   static patientsModelToPatients(patients: IPatient[]): Patient[] {
-    const patientsType: Patient[] = [];
-    patients.forEach((patient) => {
-      const patientType: PatientType = {} as PatientType;
-      if (!(patient.maritalStatus === "Soltero/a" || patient.maritalStatus === "Casado/a" || patient.maritalStatus === "Divorciado/a" || patient.maritalStatus === "Viudo/a")) throw new Error("Marital Status not valid");
-      if (!(patient.sex === "Masculino" || patient.sex === "Femenino" || patient.sex === "Otro")) throw new Error("Sex not valid");
-      patientType.names = patient.names;
-      patientType.profession = patient.profession;
-      patientType.dni = patient.dni;
-      patientType.phone = patient.phone;
-      patientType.dateBorn = patient.dateBorn;
-      patientType.direction = patient.direction;
-      patientType.maritalStatus = patient.maritalStatus;
-      patientType.sex = patient.sex;
-      patientType.reason = patient.reason;
-      patientType.version = patient.version;
-      patientsType.push(new Patient(patientType));
+    return patients.map((patient) => {
+      if (
+        !(
+          patient.maritalStatus === "Soltero/a" ||
+          patient.maritalStatus === "Casado/a" ||
+          patient.maritalStatus === "Divorciado/a" ||
+          patient.maritalStatus === "Viudo/a"
+        )
+      ) {
+        throw new Error("Marital Status not valid");
+      }
+      if (
+        !(
+          patient.sex === "Masculino" ||
+          patient.sex === "Femenino" ||
+          patient.sex === "Otro"
+        )
+      ) {
+        throw new Error("Sex not valid");
+      }
+      const patientType: PatientType = {
+        names: patient.names,
+        profession: patient.profession,
+        dni: patient.dni,
+        phone: patient.phone,
+        dateBorn: patient.dateBorn,
+        direction: patient.direction,
+        maritalStatus: patient.maritalStatus,
+        sex: patient.sex,
+        reason: patient.reason,
+        version: patient.version,
+      };
+      return new Patient(patientType);
     });
-    return patientsType;
   }
 }
