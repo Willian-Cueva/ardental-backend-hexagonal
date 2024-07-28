@@ -1,11 +1,10 @@
-import { MedicalAppointment } from "@/patients/domain/medical-appointment";
+import { MedicalAppointment } from "../../domain/medical-appointment";
+import { IRepository } from "../../domain/repositories/irepository";
 
 export class GetAllMedicalAppointments {
-  private medicalAppointments: MedicalAppointment[];
-  constructor(medicalAppointments: MedicalAppointment[]) {
-    this.medicalAppointments = medicalAppointments;
-  }
+  constructor(private medicalAppointmentRepository: IRepository<MedicalAppointment>) {}
+
   async run(): Promise<MedicalAppointment[]> {
-    return this.medicalAppointments
+    return await this.medicalAppointmentRepository.findAll();
   }
 }

@@ -1,8 +1,8 @@
 import { Patient } from "../../domain/patient";
-import { IPatientRepository } from "../../domain/repositories/ipatient_repository";
+import { IRepository } from "../../domain/repositories/irepository";
 
 export class GetAllPatients {
-  constructor(private patientRepository: IPatientRepository) {}
+  constructor(private patientRepository: IRepository<Patient>) {}
 
   async run(): Promise<Patient[]> {
     return await this.patientRepository.findAll();

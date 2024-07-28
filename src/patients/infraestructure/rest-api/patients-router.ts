@@ -5,7 +5,7 @@ const patientsRouter = express.Router();
 
 patientsRouter.get(
   "/medical-appointment/:year/:month",
-  medicalAppointmentsController.getCalendar
+  medicalAppointmentsController.getAppointmentsPerMonthAndYear
 );
 
 patientsRouter.get("/all-patients", patientsController.allPatients);

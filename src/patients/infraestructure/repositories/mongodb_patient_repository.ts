@@ -1,11 +1,11 @@
 // src/patients/infrastructure/repositories/MongoDBPatientRepository.ts
 
-import { IPatientRepository } from "../../domain/repositories/ipatient_repository";
+import { IRepository } from "../../domain/repositories/irepository";
 import { Patient } from "../../domain/patient";
 import PatientModel, { IPatient } from "../../../core/config/database/models/patient/patient";
 import { AdapterPatientsToMongoDB } from "../adapter/adapter-patients-to-mongodb";
 
-export class MongoDBPatientRepository implements IPatientRepository {
+export class MongoDBPatientRepository implements IRepository<Patient> {
   async findAll(): Promise<Patient[]> {
     const patients: IPatient[] = await PatientModel.find();
     return AdapterPatientsToMongoDB.patientsModelToPatients(patients);
