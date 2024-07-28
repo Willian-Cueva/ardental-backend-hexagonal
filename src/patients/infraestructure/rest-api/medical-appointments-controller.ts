@@ -30,13 +30,13 @@ class MedicalAppointmentsController {
       );
       
       const response: ResponseServerType = {
-        status: "ok",
+        message: "ok",
         data: appointmentsResponse,
       };
       res.json(response);
     } catch (error) {
       const response: ResponseServerType = {
-        status: "Ocurrió un error al obtener las citas médicas por mes y año",
+        message: "Ocurrió un error al obtener las citas médicas por mes y año",
         data: error,
       };
       res.json(response);

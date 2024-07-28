@@ -20,16 +20,16 @@ class PatientsController {
       const patientsTypeLocal: PatientType[] = patients.map((patient) => patient.getPatientType());
 
       const response: ResponseServerType = {
-        status: "ok",
+        message: "Petición obtener pacientes satisfactoria",
         data: patientsTypeLocal,
       };
-      res.json(response);
+      res.status(200).json(response);
     } catch (error) {
       console.error(
         `(AllPatients-Controller) Error al obtener los pacientes debido a: ${error}`
       )
       const response: ResponseServerType = {
-        status: `Error al obtener los pacientes debido a: ${error}`,
+        message: `Error al obtener los pacientes debido a: ${error}`,
         data: null,
       };
       res.json(response);
