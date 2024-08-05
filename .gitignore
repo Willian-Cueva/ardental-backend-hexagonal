@@ -3,3 +3,7 @@ node_modules
 images
 mysql.test.py
 .venv
+test_prueba*
+escenario_*
+pruebas*
+build

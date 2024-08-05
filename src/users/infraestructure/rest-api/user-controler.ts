@@ -45,7 +45,7 @@ class UserController {
       });
       await account.save();
       const response: ResponseServerType = {
-        status: "ok",
+        message: "ok",
         data: null,
       };
       res.json(response);
@@ -53,7 +53,7 @@ class UserController {
       console.log(error);
 
       const response: ResponseServerType = {
-        status: "Ocurrió un error al registrar usuario debido a: " + error,
+        message: "Ocurrió un error al registrar usuario debido a: " + error,
         data: null,
       };
       res.json(response);
@@ -94,7 +94,7 @@ class UserController {
       );
 
       const data: ResponseServerType = {
-        status: "ok",
+        message: "ok",
         data: session,
       };
       res.json(data);
@@ -102,7 +102,7 @@ class UserController {
       console.log(error);
 
       const data: ResponseServerType = {
-        status: "No se pudo loguear el usuario debido a " + error,
+        message: "No se pudo loguear el usuario debido a " + error,
         data: null,
       };
       res.json(data);
