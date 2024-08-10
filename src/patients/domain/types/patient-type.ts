@@ -1,4 +1,4 @@
-import { SexType } from "@/users/domain/types/sex-type";
+import { SexType } from "./sex-type";
 import { MaritalStatusType } from "./marital-status-type";
 
 export type PatientType = {
