@@ -1,4 +1,4 @@
-import { Helpers } from "../../users/domain/helpers/helpers";
+import { Helpers } from "../domain/helpers/helpers";
 import { PatientType } from "./types/patient-type";
 import { ICrud } from "./dependencies/ICrud";
 

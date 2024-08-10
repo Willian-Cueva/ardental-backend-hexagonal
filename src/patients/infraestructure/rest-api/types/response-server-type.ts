@@ -1,4 +1,4 @@
 export type ResponseServerType = {
-  message: string | "ok";
+  message: string;
   data: any | any[] | null;
 };

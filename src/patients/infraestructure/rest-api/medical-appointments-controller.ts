@@ -1,7 +1,7 @@
 // src/patients/infrastructure/rest-api/medical-appointments-controller.ts
 
 import { Request, Response } from "express";
-import { ResponseServerType } from "../../../users/infraestructure/rest-api/types/response-server-type";
+import { ResponseServerType } from "./types/response-server-type";
 import { GetAllMedicalAppointments } from "../../app/medical-appointments/get-all-medical-appointments";
 import { GetAppointmentsPerMonthAndYear } from "../../app/medical-appointments/get-appointments-per-month-and-year";
 import { MedicalAppointmentType } from "../../domain/types/medical-appointment-type";

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ResponseServerType } from "../../../users/infraestructure/rest-api/types/response-server-type";
+import { ResponseServerType } from "./types/response-server-type";
 import { GetAllPatients } from "../../app/patients/get-all-patients";
 import { PatientType } from "@/patients/domain/types/patient-type";
 import { MongoDBPatientRepository } from "../repositories/mongodb_patient_repository";
