@@ -1,9 +1,9 @@
 export class Helpers {
 
   static nameValidate(name: string): boolean {
-    const re = /^[a-zA-Z]{2,15}$/;
-    return re.test(name);
-  }
+    const re = /^[a-zA-Z]+(\s[a-zA-Z]+)*$/;
+    return re.test(name) && name.length <= 50 && name.length >= 2;
+}
 
   static emailValidate(email: string): boolean {
     const re =
@@ -21,11 +21,6 @@ export class Helpers {
 
   static stringToNumberArray = (chain: string): number[] => {
     const longitud = chain.length;
-    if (longitud !== 10) {
-      throw new Error(
-        "Se debe introducir una cadena de texto de 10 caracteres numéricos para la conversión hacia un arreglo de tipo number"
-      );
-    }
     const arrayNumber: number[] = [];
     for (let i = 0; i < longitud; i++) {
       arrayNumber.push(parseInt(chain[i]));
@@ -34,26 +29,39 @@ export class Helpers {
   };
 
   static dniValidate(chain: string): boolean {
+    // Convertir la cadena a un array de números
     const cad = Helpers.stringToNumberArray(chain);
     const longitud = cad.length;
+
+    // Validar longitud (la cédula ecuatoriana debe tener exactamente 10 dígitos)
     if (longitud !== 10) return false;
 
+    // Validar código de provincia (los dos primeros dígitos deben estar entre 1 y 24, o ser 30)
+    const provincia = parseInt(chain.substring(0, 2), 10);
+    if ((provincia < 1 || provincia > 24) && provincia !== 30) return false;
+
+    // Validar el tercer dígito (debe ser menor a 6 para cédulas)
+    if (cad[2] >= 6) return false;
+
+    // Calcular el dígito verificador
     let total = 0;
-    const longcheck = longitud - 1;
+    const longcheck = longitud - 1; // Excluir el último dígito (dígito verificador)
     for (let i = 0; i < longcheck; i++) {
-      if (i % 2 === 0) {
-        let aux = cad[i] * 2;
-        if (aux > 9) aux -= 9;
-        total += aux;
-      } else {
-        total += cad[i];
-      }
+        if (i % 2 === 0) {
+            let aux = cad[i] * 2;
+            if (aux > 9) aux -= 9;
+            total += aux;
+        } else {
+            total += cad[i];
+        }
     }
 
-    total = total % 10 ? 10 - (total % 10) : 0;
+    // Calcular el dígito verificador esperado
+    const digitoVerificador = total % 10 ? 10 - (total % 10) : 0;
 
-    return cad[longitud - 1] === total;
-  }
+    // Verificar que el último dígito coincida con el dígito verificador
+    return cad[longitud - 1] === digitoVerificador;
+}
 
   static phoneValidate(phone: string): boolean {
     // Comprueba si la longitud de la cadena es 10

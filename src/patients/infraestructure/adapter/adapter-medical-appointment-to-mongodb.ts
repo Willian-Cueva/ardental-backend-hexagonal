@@ -1,5 +1,3 @@
-// src/patients/infrastructure/adapter/adapter-medical-appointments-to-mongodb.ts
-
 import { IMedicalAppointment } from "../../../core/config/database/models/patient/medical-appointment";
 import { MedicalAppointment } from "../../domain/medical-appointment";
 import { MedicalAppointmentType } from "../../domain/types/medical-appointment-type";

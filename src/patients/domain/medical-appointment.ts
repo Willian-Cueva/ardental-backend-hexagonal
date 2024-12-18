@@ -7,6 +7,7 @@ export class MedicalAppointment implements ICrud<MedicalAppointmentType> {
 
   constructor(medicalAppointment: MedicalAppointmentType) {
     this.medicalAppointment = medicalAppointment;
+    this.check();
   }
 
   getMedicalAppointmentType(): MedicalAppointmentType {
@@ -48,7 +49,7 @@ export class MedicalAppointment implements ICrud<MedicalAppointmentType> {
   }
 
   private check() {
-    if (!this.medicalAppointment) throw new Error("ClinicalSigns not found");
+    if (!this.medicalAppointment || this.medicalAppointment===null) throw new Error("ClinicalSigns not found");
     if (
       !this.medicalAppointment.dniPatient ||
       !this.medicalAppointment.namesPatient
@@ -88,7 +89,7 @@ export class MedicalAppointment implements ICrud<MedicalAppointmentType> {
 
     if (
       !this.medicalAppointment.state ||
-      !this.isValidState(this.medicalAppointment)
+      !this.isValidState(this.medicalAppointment.state)
     ) {
       throw new Error(
         "El estado de la cita es obligatorio o el estado no corresponde con el formato correcto"
@@ -96,16 +97,13 @@ export class MedicalAppointment implements ICrud<MedicalAppointmentType> {
     }
   }
 
-  private isValidState(
-    appointment: MedicalAppointmentType
-  ): appointment is MedicalAppointmentType & {
-    state: "PENDIENTE" | "SE PRESENTO" | "NO SE PRESENTO";
-  } {
-    return (
-      appointment.state === "PENDIENTE" ||
-      appointment.state === "SE PRESENTO" ||
-      appointment.state === "NO SE PRESENTO"
-    );
+  private isValidState(state: String): boolean {
+    let chis: boolean = false;
+    chis =
+      state === "PENDIENTE" ||
+      state === "SE PRESENTO" ||
+      state === "NO SE PRESENTO";
+    return chis;
   }
 
   private esValidoFormatoHHMM(cadena: string): boolean {
@@ -114,7 +112,7 @@ export class MedicalAppointment implements ICrud<MedicalAppointmentType> {
   }
 
   async read(): Promise<MedicalAppointmentType> {
-    if (!this.medicalAppointment) throw new Error("ClinicalSigns not found");
+    if (!this.medicalAppointment || this.medicalAppointment===null) throw new Error("ClinicalSigns not found");
     this.check();
     return this.medicalAppointment;
   }
@@ -129,6 +127,9 @@ export class MedicalAppointment implements ICrud<MedicalAppointmentType> {
   async delete(): Promise<boolean> {
     if (!this.medicalAppointment) throw new Error("ClinicalSigns not found");
     this.medicalAppointment = null;
+    if (this.medicalAppointment !== null) {
+      throw new Error("No se pudo eliminar la cita");
+    }
     return this.medicalAppointment === null;
   }
 }
