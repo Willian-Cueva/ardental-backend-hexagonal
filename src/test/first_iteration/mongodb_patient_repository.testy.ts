@@ -1,5 +1,7 @@
 import { MongoDBPatientRepository } from "../../patients/infraestructure/repositories/mongodb_patient_repository";
-import PatientModel, { IPatient } from "../../core/config/database/models/patient/patient";
+import PatientModel, {
+  IPatient,
+} from "../../core/config/database/models/patient/patient";
 import { AdapterPatientsToMongoDB } from "../../patients/infraestructure/adapter/adapter-patients-to-mongodb";
 import { Patient } from "../../patients/domain/patient";
 import { PatientType } from "@/patients/domain/types/patient-type";
@@ -35,13 +37,17 @@ describe("MongoDBPatientRepository", () => {
       ];
 
       (PatientModel.find as jest.Mock).mockResolvedValue(mockPatients);
-      (AdapterPatientsToMongoDB.patientsModelToPatients as jest.Mock).mockReturnValue(
+      (
+        AdapterPatientsToMongoDB.patientsModelToPatients as jest.Mock
+      ).mockReturnValue(
         mockPatients.map((patient) => new Patient(patient as PatientType))
       );
 
       const result = await repository.findAll();
       expect(PatientModel.find).toHaveBeenCalledTimes(1);
-      expect(AdapterPatientsToMongoDB.patientsModelToPatients).toHaveBeenCalledWith(mockPatients);
+      expect(
+        AdapterPatientsToMongoDB.patientsModelToPatients
+      ).toHaveBeenCalledWith(mockPatients);
       expect(result).toHaveLength(1);
       expect(result[0]).toBeInstanceOf(Patient);
     });
@@ -65,7 +71,9 @@ describe("MongoDBPatientRepository", () => {
       } as IPatient;
 
       (PatientModel.findById as jest.Mock).mockResolvedValue(mockPatient);
-      (AdapterPatientsToMongoDB.patientModelToPatientType as jest.Mock).mockReturnValue(mockPatient);
+      (
+        AdapterPatientsToMongoDB.patientModelToPatientType as jest.Mock
+      ).mockReturnValue(mockPatient);
 
       const result = await repository.findById("mock-id");
       expect(PatientModel.findById).toHaveBeenCalledWith("mock-id");
@@ -100,11 +108,15 @@ describe("MongoDBPatientRepository", () => {
         ...mockPatient.getPatientType(),
       };
 
-      (AdapterPatientsToMongoDB.patientTypeToPatientModel as jest.Mock).mockReturnValue(mockPatientModel);
+      (
+        AdapterPatientsToMongoDB.patientTypeToPatientModel as jest.Mock
+      ).mockReturnValue(mockPatientModel);
       (PatientModel.create as jest.Mock).mockResolvedValue(mockPatientModel);
 
       await repository.save(mockPatient);
-      expect(AdapterPatientsToMongoDB.patientTypeToPatientModel).toHaveBeenCalledWith(mockPatient.getPatientType());
+      expect(
+        AdapterPatientsToMongoDB.patientTypeToPatientModel
+      ).toHaveBeenCalledWith(mockPatient.getPatientType());
       expect(PatientModel.create).toHaveBeenCalledWith(mockPatientModel);
     });
   });
@@ -128,11 +140,18 @@ describe("MongoDBPatientRepository", () => {
         ...mockPatient.getPatientType(),
       };
 
-      (AdapterPatientsToMongoDB.patientTypeToPatientModel as jest.Mock).mockReturnValue(mockPatientModel);
+      (
+        AdapterPatientsToMongoDB.patientTypeToPatientModel as jest.Mock
+      ).mockReturnValue(mockPatientModel);
 
       await repository.update("mock-id", mockPatient);
-      expect(AdapterPatientsToMongoDB.patientTypeToPatientModel).toHaveBeenCalledWith(mockPatient.getPatientType());
-      expect(PatientModel.findByIdAndUpdate).toHaveBeenCalledWith("mock-id", mockPatientModel);
+      expect(
+        AdapterPatientsToMongoDB.patientTypeToPatientModel
+      ).toHaveBeenCalledWith(mockPatient.getPatientType());
+      expect(PatientModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        "mock-id",
+        mockPatientModel
+      );
     });
   });
 
