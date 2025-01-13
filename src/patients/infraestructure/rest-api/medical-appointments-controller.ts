@@ -33,13 +33,37 @@ class MedicalAppointmentsController {
         message: "ok",
         data: appointmentsResponse,
       };
-      res.json(response);
+      res.status(200).json(response);
     } catch (error) {
       const response: ResponseServerType = {
         message: "Ocurrió un error al obtener las citas médicas por mes y año",
         data: error,
       };
-      res.json(response);
+      res.status(500).json(response);
+    }
+  };
+
+  // genera el metodo allMedicalAppointments
+  allMedicalAppointments = async (_req: Request, res: Response) => {
+    try {
+      const getAllMedicalAppointments = new GetAllMedicalAppointments(this.medicalAppointmentRepository);
+      const appointmentsLocal = await getAllMedicalAppointments.run();
+
+      const appointmentsResponse: MedicalAppointmentType[] = appointmentsLocal.map(
+        appointment => appointment.getMedicalAppointmentType()
+      );
+      
+      const response: ResponseServerType = {
+        message: "ok",
+        data: appointmentsResponse,
+      };
+      res.status(200).json(response);
+    } catch (error) {
+      const response: ResponseServerType = {
+        message: "Ocurrió un error al obtener las citas médicas",
+        data: error,
+      };
+      res.status(500).json(response);
     }
   };
 }
