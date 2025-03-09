@@ -28,9 +28,11 @@ export class Server {
     this.app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
     //routes
-    const api = "/api";
-    this.app.use(`${api}/patients`, patientsRouter);
-    this.app.use(`${api}/medical-appointment`, medicalAppointmentsRouter);
+    const apiRoute = "/api";
+    const patientsRoute = `${apiRoute}/patients`;
+    const medicalAppointmentsRoute = `${patientsRoute}/medical-appointment`;
+    this.app.use(patientsRoute, patientsRouter);
+    this.app.use(medicalAppointmentsRoute, medicalAppointmentsRouter);
 
 
     this.app.use(express.static(path.join(__dirname, "..", "assets")));
