@@ -71,10 +71,6 @@ export class MedicalAppointment implements ICrud<MedicalAppointmentType> {
       );
     }
 
-    if (this.medicalAppointment.date.day.length !== 2) {
-      throw new Error("El día debe ser de 2 dígitos");
-    }
-
     try {
       Number(this.medicalAppointment.date.day);
       Number(this.medicalAppointment.date.month);

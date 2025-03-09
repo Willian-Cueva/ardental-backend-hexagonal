@@ -24,11 +24,6 @@ describe("MedicalAppointment", () => {
     );
   });
 
-  it("debería verificar formato de fecha incorrecto", () => {
-    const invalidAppointment = { ...validAppointment, date: { day: "1", month: "01", year: "2024" } };
-    expect(() => new MedicalAppointment(invalidAppointment)).toThrow("El día debe ser de 2 dígitos");
-  });
-
   it("debería lanzar error si el formato de hora no es válido", () => {
     const invalidAppointment = { ...validAppointment, timeStart: "25:00" };
     expect(() => new MedicalAppointment(invalidAppointment)).toThrow("El formato de la hora de inicio debe ser HH:MM");
