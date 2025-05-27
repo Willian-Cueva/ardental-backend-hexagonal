@@ -25,13 +25,13 @@ class MedicalAppointmentsController {
       );
       const appointmentsLocal = await getAppointmentsPerMonthAndYear.run();
 
-      const appointmentsResponse: MedicalAppointmentType[] = appointmentsLocal.map(
-        appointment => appointment.getMedicalAppointmentType()
-      );
+      // const appointmentsResponse: MedicalAppointmentType[] = appointmentsLocal.map(
+      //   appointment => appointment.getMedicalAppointmentType()
+      // );
       
       const response: ResponseServerType = {
         message: "ok",
-        data: appointmentsResponse,
+        data: appointmentsLocal,
       };
       
       res.status(200).json(response);
