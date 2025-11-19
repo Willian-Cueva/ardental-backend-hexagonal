@@ -3,8 +3,8 @@ import path from "path";
 import cors from "cors"
 import { config } from "./core/config/config";
 import morgan from "morgan";
-import { patientsRouter } from "./patients/infraestructure/rest-api/patients-router";
-import { medicalAppointmentsRouter } from "./patients/infraestructure/rest-api/medical-appointments-router";
+import { patientsRouter } from "./patients/infraestructure/rest-api/routes/patients.routes";
+import { medicalAppointmentsRouter } from "./patients/infraestructure/rest-api/routes/medical-appointments.routes";
 
 export class Server {
   private readonly app: Express;
