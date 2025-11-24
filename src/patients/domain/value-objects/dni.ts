@@ -29,22 +29,43 @@ export class DNI {
   }
 
   /**
-   * Reconstruye un DNI desde persistencia (PARA DATOS DE BD - Validación básica)
+   * Reconstruye un DNI desde persistencia (PARA DATOS DE BD - Validación permisiva)
    * En arquitectura hexagonal, confiamos en que los datos ya fueron validados al insertarse.
-   * Solo validamos formato básico para evitar errores.
-   * @param value - String de 10 dígitos desde la base de datos
+   * Validación mínima para tolerar datos legacy.
+   * @param value - String con el DNI desde la base de datos
    */
   static fromPersistence(value: string): DNI {
     if (!value || typeof value !== 'string') {
-      throw new Error('El DNI es requerido y debe ser un string');
+      console.warn('[DNI.fromPersistence] DNI vacío o inválido, usando valor por defecto');
+      // Tolerar datos vacíos usando un valor por defecto
+      return new DNI('0000000000');
     }
 
-    // Solo validar que tenga 10 dígitos numéricos (sin validar checksum)
-    if (!/^\d{10}$/.test(value)) {
-      throw new Error('El DNI debe tener 10 dígitos numéricos');
+    // Normalizar: eliminar espacios y caracteres no numéricos
+    const normalized = value.trim().replace(/\D/g, '');
+
+    // Si después de normalizar está vacío, usar valor por defecto
+    if (normalized.length === 0) {
+      console.warn(`[DNI.fromPersistence] DNI "${value}" no contiene dígitos, usando valor por defecto`);
+      return new DNI('0000000000');
     }
 
-    return new DNI(value);
+    // Si tiene menos de 10 dígitos, hacer padding con ceros a la izquierda
+    if (normalized.length < 10) {
+      const padded = normalized.padStart(10, '0');
+      console.warn(`[DNI.fromPersistence] DNI "${value}" tiene ${normalized.length} dígitos, usando padding: ${padded}`);
+      return new DNI(padded);
+    }
+
+    // Si tiene más de 10 dígitos, tomar solo los primeros 10
+    if (normalized.length > 10) {
+      const truncated = normalized.substring(0, 10);
+      console.warn(`[DNI.fromPersistence] DNI "${value}" tiene ${normalized.length} dígitos, truncando a: ${truncated}`);
+      return new DNI(truncated);
+    }
+
+    // Exactamente 10 dígitos
+    return new DNI(normalized);
   }
 
   /**
