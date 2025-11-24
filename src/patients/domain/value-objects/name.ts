@@ -12,7 +12,7 @@ export class Name {
   }
 
   /**
-   * Crea un Name validado
+   * Crea un Name validado (PARA NUEVOS DATOS - Validación estricta)
    * @param value - String con el nombre (2-50 caracteres alfabéticos)
    * @throws Error si el nombre no es válido
    */
@@ -25,6 +25,25 @@ export class Name {
 
     if (!this.isValid(trimmedValue)) {
       throw new Error('El nombre debe tener entre 2 y 50 caracteres alfabéticos');
+    }
+
+    return new Name(trimmedValue);
+  }
+
+  /**
+   * Reconstruye un Name desde persistencia (PARA DATOS DE BD - Validación básica)
+   * @param value - String con el nombre desde la base de datos
+   */
+  static fromPersistence(value: string): Name {
+    if (!value || typeof value !== 'string') {
+      throw new Error('El nombre es requerido');
+    }
+
+    const trimmedValue = value.trim();
+
+    // Validación básica: solo verificar que no esté vacío
+    if (trimmedValue.length === 0) {
+      throw new Error('El nombre no puede estar vacío');
     }
 
     return new Name(trimmedValue);

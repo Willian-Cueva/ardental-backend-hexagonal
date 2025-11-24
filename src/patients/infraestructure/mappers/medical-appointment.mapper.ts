@@ -15,6 +15,7 @@ import { IMedicalAppointment } from '../../../core/config/database/models/patien
 export class MedicalAppointmentMapper {
   /**
    * Convierte un documento de MongoDB a una entidad de dominio
+   * Usa fromPersistence() en lugar de create() para reconstruir datos de la BD
    */
   static toDomain(persistenceModel: IMedicalAppointment): MedicalAppointment {
     const id = persistenceModel._id?.toString();
@@ -25,8 +26,8 @@ export class MedicalAppointmentMapper {
 
     return MedicalAppointment.reconstruct({
       id,
-      dniPatient: DNI.create(persistenceModel.dniPatient),
-      namesPatient: Name.create(persistenceModel.namesPatient),
+      dniPatient: DNI.fromPersistence(persistenceModel.dniPatient),
+      namesPatient: Name.fromPersistence(persistenceModel.namesPatient),
       date: AppointmentDate.create(
         persistenceModel.date.day,
         persistenceModel.date.month,

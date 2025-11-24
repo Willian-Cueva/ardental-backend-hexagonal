@@ -12,7 +12,7 @@ export class DNI {
   }
 
   /**
-   * Crea un DNI validado
+   * Crea un DNI validado (PARA NUEVOS DATOS - Validación estricta)
    * @param value - String de 10 dígitos que representa el DNI
    * @throws Error si el DNI no es válido
    */
@@ -23,6 +23,25 @@ export class DNI {
 
     if (!this.isValid(value)) {
       throw new Error('Debe ingresar una cédula válida de 10 dígitos');
+    }
+
+    return new DNI(value);
+  }
+
+  /**
+   * Reconstruye un DNI desde persistencia (PARA DATOS DE BD - Validación básica)
+   * En arquitectura hexagonal, confiamos en que los datos ya fueron validados al insertarse.
+   * Solo validamos formato básico para evitar errores.
+   * @param value - String de 10 dígitos desde la base de datos
+   */
+  static fromPersistence(value: string): DNI {
+    if (!value || typeof value !== 'string') {
+      throw new Error('El DNI es requerido y debe ser un string');
+    }
+
+    // Solo validar que tenga 10 dígitos numéricos (sin validar checksum)
+    if (!/^\d{10}$/.test(value)) {
+      throw new Error('El DNI debe tener 10 dígitos numéricos');
     }
 
     return new DNI(value);

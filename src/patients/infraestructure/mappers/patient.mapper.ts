@@ -19,6 +19,7 @@ import { IPatient } from '../../../core/config/database/models/patient/patient';
 export class PatientMapper {
   /**
    * Convierte un documento de MongoDB a una entidad de dominio
+   * Usa fromPersistence() en lugar de create() para reconstruir datos de la BD
    */
   static toDomain(persistenceModel: IPatient): Patient {
     const id = persistenceModel._id?.toString();
@@ -29,9 +30,9 @@ export class PatientMapper {
 
     return Patient.reconstruct({
       id,
-      names: Name.create(persistenceModel.names),
+      names: Name.fromPersistence(persistenceModel.names),
       profession: persistenceModel.profession,
-      dni: DNI.create(persistenceModel.dni),
+      dni: DNI.fromPersistence(persistenceModel.dni),
       phone: Phone.create(persistenceModel.phone),
       dateBorn: DateOfBirth.create(persistenceModel.dateBorn),
       direction: persistenceModel.direction,

@@ -32,8 +32,9 @@ export class MongoDBMedicalAppointmentRepository implements MedicalAppointmentRe
   }
 
   async findByMonthAndYear(month: number, year: number): Promise<MedicalAppointment[]> {
-    // Formatear con padding para coincidir con el formato almacenado
-    const monthStr = month.toString().padStart(2, '0');
+    // Convertir a string SIN padding para coincidir con el formato almacenado
+    // En la BD está guardado como "5", no "05"
+    const monthStr = month.toString();
     const yearStr = year.toString();
 
     const appointments = await MedicalAppointmentModel.find({

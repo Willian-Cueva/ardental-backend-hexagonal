@@ -76,12 +76,12 @@ export class AppointmentDate {
   }
 
   /**
-   * Retorna la fecha en formato para persistencia (strings con padding)
+   * Retorna la fecha en formato para persistencia (strings SIN padding para coincidir con BD existente)
    */
   toDTO(): { day: string; month: string; year: string } {
     return {
-      day: this.day.toString().padStart(2, '0'),
-      month: this.month.toString().padStart(2, '0'),
+      day: this.day.toString(),
+      month: this.month.toString(),
       year: this.year.toString(),
     };
   }
