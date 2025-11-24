@@ -186,7 +186,7 @@ export class Patient {
    * pero idealmente el adaptador debería conocer cómo extraer los datos.
    */
   toPrimitives(): {
-    id?: string;
+    _id?: string;
     names: string;
     profession: string;
     dni: string;
@@ -196,9 +196,10 @@ export class Patient {
     maritalStatus: string;
     sex: string;
     reason: string;
+    version: number;
   } {
     return {
-      id: this.id,
+      _id: this.id,
       names: this.names.getValue(),
       profession: this.profession,
       dni: this.dni.getValue(),
@@ -208,6 +209,7 @@ export class Patient {
       maritalStatus: this.maritalStatus.getValue(),
       sex: this.sex.getValue(),
       reason: this.reason,
+      version: 2,
     };
   }
 }

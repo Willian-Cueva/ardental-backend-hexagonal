@@ -33,14 +33,14 @@ export class PatientsController {
 
       // Retornar respuesta HTTP
       res.status(200).json({
-        message: 'Petición obtener pacientes satisfactoria',
+        status: 'ok',
         data: patientsDTO,
       });
     } catch (error) {
       console.error('(PatientsController) Error al obtener pacientes:', error);
 
       res.status(500).json({
-        message: error instanceof Error ? error.message : 'Error al obtener los pacientes',
+        status: 'Error',
         data: null,
       });
     }

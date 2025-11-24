@@ -174,7 +174,7 @@ export class MedicalAppointment {
    * Convierte la entidad a un objeto plano para persistencia
    */
   toPrimitives(): {
-    id?: string;
+    _id?: string;
     dniPatient: string;
     namesPatient: string;
     date: { day: string; month: string; year: string };
@@ -183,7 +183,7 @@ export class MedicalAppointment {
     state: string;
   } {
     return {
-      id: this.id,
+      _id: this.id,
       dniPatient: this.dniPatient.getValue(),
       namesPatient: this.namesPatient.getValue(),
       date: this.date.toDTO(),

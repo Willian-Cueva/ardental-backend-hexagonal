@@ -54,15 +54,16 @@ export class MedicalAppointmentsController {
 
       const appointmentsDTO = appointments.map((appointment) => appointment.toPrimitives());
 
+      // Retornar respuesta HTTP
       res.status(200).json({
-        message: `Citas médicas de ${month}/${year} obtenidas satisfactoriamente`,
+        message: 'ok',
         data: appointmentsDTO,
       });
     } catch (error) {
       console.error('(MedicalAppointmentsController) Error al obtener citas por mes/año:', error);
 
       res.status(500).json({
-        message: error instanceof Error ? error.message : 'Error al obtener las citas médicas',
+        message: 'Ocurrio un error al traer las citas medicas',
         data: null,
       });
     }
