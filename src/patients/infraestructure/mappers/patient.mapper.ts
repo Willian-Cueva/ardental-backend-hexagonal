@@ -39,6 +39,7 @@ export class PatientMapper {
       maritalStatus: MaritalStatus.fromPersistence(persistenceModel.maritalStatus),
       sex: Sex.fromPersistence(persistenceModel.sex),
       reason: persistenceModel.reason || '',          // Valor por defecto para datos legacy
+      version: persistenceModel.version ?? 1,         // Campo custom de la aplicación (default 1 para datos legacy)
       __v: (persistenceModel as any).__v ?? 0,        // Mongoose version key
       createdAt: persistenceModel.createdAt,          // Mongoose timestamp
     });
@@ -60,7 +61,7 @@ export class PatientMapper {
       maritalStatus: primitives.maritalStatus,
       sex: primitives.sex,
       reason: primitives.reason,
-      version: 2,
+      version: primitives.version,  // ✅ Usa el valor de la entidad
     };
   }
 

@@ -24,6 +24,7 @@ export interface PatientProps {
   maritalStatus: MaritalStatus;
   sex: Sex;
   reason: string;
+  version?: number;  // Campo custom de la aplicación
   __v?: number;  // Mongoose version key
   createdAt?: Date;  // Mongoose timestamp
 }
@@ -39,6 +40,7 @@ export class Patient {
   private maritalStatus: MaritalStatus;
   private sex: Sex;
   private reason: string;
+  private readonly version: number;  // Campo custom de la aplicación
   private readonly __v?: number;  // Mongoose version key
   private readonly createdAt?: Date;  // Mongoose timestamp
 
@@ -53,6 +55,7 @@ export class Patient {
     this.maritalStatus = props.maritalStatus;
     this.sex = props.sex;
     this.reason = props.reason;
+    this.version = props.version ?? 1;  // Default 1 si no viene de la BD (legacy)
     this.__v = props.__v ?? 0;  // Default 0 si no viene de la BD
     this.createdAt = props.createdAt;  // Timestamp de MongoDB
 
@@ -225,7 +228,7 @@ export class Patient {
       reason: this.reason,
       __v: this.__v ?? 0,
       createdAt: this.createdAt?.toISOString(),
-      version: 2,
+      version: this.version,  // ✅ Usa el valor de la BD
     };
   }
 }
