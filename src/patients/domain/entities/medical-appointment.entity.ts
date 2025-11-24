@@ -20,6 +20,8 @@ export interface MedicalAppointmentProps {
   timeStart: AppointmentTime;
   observations?: string;
   state: AppointmentState;
+  __v?: number;  // Mongoose version key
+  createdAt?: Date;  // Mongoose timestamp
 }
 
 export class MedicalAppointment {
@@ -30,6 +32,8 @@ export class MedicalAppointment {
   private readonly timeStart: AppointmentTime;
   private observations: string;
   private state: AppointmentState;
+  private readonly __v?: number;  // Mongoose version key
+  private readonly createdAt?: Date;  // Mongoose timestamp
 
   private constructor(props: MedicalAppointmentProps) {
     this.id = props.id;
@@ -39,6 +43,8 @@ export class MedicalAppointment {
     this.timeStart = props.timeStart;
     this.observations = props.observations || '';
     this.state = props.state;
+    this.__v = props.__v ?? 0;  // Default 0 si no viene de la BD
+    this.createdAt = props.createdAt;  // Timestamp de MongoDB
   }
 
   /**
@@ -181,6 +187,8 @@ export class MedicalAppointment {
     timeStart: string;
     observations: string;
     state: string;
+    __v: number;
+    createdAt?: string;
   } {
     return {
       _id: this.id,
@@ -190,6 +198,8 @@ export class MedicalAppointment {
       timeStart: this.timeStart.getValue(),
       observations: this.observations,
       state: this.state.getValue(),
+      __v: this.__v ?? 0,
+      createdAt: this.createdAt?.toISOString(),
     };
   }
 }

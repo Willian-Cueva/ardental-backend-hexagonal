@@ -36,6 +36,8 @@ export class MedicalAppointmentMapper {
       timeStart: AppointmentTime.create(persistenceModel.timeStart),
       observations: persistenceModel.observations || '',
       state: AppointmentState.create(persistenceModel.state),
+      __v: (persistenceModel as any).__v ?? 0,  // Mongoose version key
+      createdAt: persistenceModel.createdAt,     // Mongoose timestamp
     });
   }
 

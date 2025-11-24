@@ -24,6 +24,8 @@ export interface PatientProps {
   maritalStatus: MaritalStatus;
   sex: Sex;
   reason: string;
+  __v?: number;  // Mongoose version key
+  createdAt?: Date;  // Mongoose timestamp
 }
 
 export class Patient {
@@ -37,6 +39,8 @@ export class Patient {
   private maritalStatus: MaritalStatus;
   private sex: Sex;
   private reason: string;
+  private readonly __v?: number;  // Mongoose version key
+  private readonly createdAt?: Date;  // Mongoose timestamp
 
   private constructor(props: PatientProps) {
     this.id = props.id;
@@ -49,6 +53,8 @@ export class Patient {
     this.maritalStatus = props.maritalStatus;
     this.sex = props.sex;
     this.reason = props.reason;
+    this.__v = props.__v ?? 0;  // Default 0 si no viene de la BD
+    this.createdAt = props.createdAt;  // Timestamp de MongoDB
 
     this.validate();
   }
@@ -202,6 +208,8 @@ export class Patient {
     maritalStatus: string;
     sex: string;
     reason: string;
+    __v: number;
+    createdAt?: string;
     version: number;
   } {
     return {
@@ -215,6 +223,8 @@ export class Patient {
       maritalStatus: this.maritalStatus.getValue(),
       sex: this.sex.getValue(),
       reason: this.reason,
+      __v: this.__v ?? 0,
+      createdAt: this.createdAt?.toISOString(),
       version: 2,
     };
   }

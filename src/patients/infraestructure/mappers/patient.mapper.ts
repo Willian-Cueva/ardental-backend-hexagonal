@@ -39,6 +39,8 @@ export class PatientMapper {
       maritalStatus: MaritalStatus.fromPersistence(persistenceModel.maritalStatus),
       sex: Sex.fromPersistence(persistenceModel.sex),
       reason: persistenceModel.reason || '',          // Valor por defecto para datos legacy
+      __v: (persistenceModel as any).__v ?? 0,        // Mongoose version key
+      createdAt: persistenceModel.createdAt,          // Mongoose timestamp
     });
   }
 

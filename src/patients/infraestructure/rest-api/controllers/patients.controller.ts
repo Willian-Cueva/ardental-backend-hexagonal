@@ -29,7 +29,11 @@ export class PatientsController {
       const patients = await useCase.execute();
 
       // Convertir entidades de dominio a DTOs para la respuesta
-      const patientsDTO = patients.map((patient) => patient.toPrimitives());
+      // NOTA: Excluir createdAt para este endpoint (no lo incluye el backend monolítico)
+      const patientsDTO = patients.map((patient) => {
+        const { createdAt, ...patientData } = patient.toPrimitives();
+        return patientData;
+      });
 
       // Retornar respuesta HTTP
       res.status(200).json({
