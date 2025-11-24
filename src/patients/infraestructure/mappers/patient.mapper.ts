@@ -31,14 +31,14 @@ export class PatientMapper {
     return Patient.reconstruct({
       id,
       names: Name.fromPersistence(persistenceModel.names),
-      profession: persistenceModel.profession,
+      profession: persistenceModel.profession || '',  // Valor por defecto para datos legacy
       dni: DNI.fromPersistence(persistenceModel.dni),
-      phone: Phone.create(persistenceModel.phone),
-      dateBorn: DateOfBirth.create(persistenceModel.dateBorn),
-      direction: persistenceModel.direction,
-      maritalStatus: MaritalStatus.create(persistenceModel.maritalStatus),
-      sex: Sex.create(persistenceModel.sex),
-      reason: persistenceModel.reason,
+      phone: Phone.fromPersistence(persistenceModel.phone),
+      dateBorn: DateOfBirth.fromPersistence(persistenceModel.dateBorn),
+      direction: persistenceModel.direction || '',    // Valor por defecto para datos legacy
+      maritalStatus: MaritalStatus.fromPersistence(persistenceModel.maritalStatus),
+      sex: Sex.fromPersistence(persistenceModel.sex),
+      reason: persistenceModel.reason || '',          // Valor por defecto para datos legacy
     });
   }
 

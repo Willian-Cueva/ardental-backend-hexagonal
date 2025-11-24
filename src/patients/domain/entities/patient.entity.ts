@@ -69,18 +69,24 @@ export class Patient {
 
   /**
    * Validación de reglas de negocio
+   *
+   * IMPORTANTE: Esta validación es permisiva para tolerar datos legacy.
+   * Los campos profession, direction y reason pueden estar vacíos en datos legacy.
+   * La validación estricta ocurre en los métodos update*() cuando el usuario modifica datos.
    */
   private validate(): void {
-    if (!this.profession || this.profession.trim().length === 0) {
-      throw new Error('La profesión es requerida');
+    // Permitir campos vacíos para datos legacy (fromPersistence)
+    // Solo validar que sean strings
+    if (typeof this.profession !== 'string') {
+      throw new Error('La profesión debe ser un string');
     }
 
-    if (!this.direction || this.direction.trim().length === 0) {
-      throw new Error('La dirección es requerida');
+    if (typeof this.direction !== 'string') {
+      throw new Error('La dirección debe ser un string');
     }
 
-    if (!this.reason || this.reason.trim().length === 0) {
-      throw new Error('El motivo de consulta es requerido');
+    if (typeof this.reason !== 'string') {
+      throw new Error('El motivo de consulta debe ser un string');
     }
   }
 

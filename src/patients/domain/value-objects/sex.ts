@@ -17,6 +17,9 @@ export class Sex {
     this.value = value;
   }
 
+  /**
+   * Crea un Sex validado (PARA NUEVOS DATOS - Validación estricta)
+   */
   static create(value: string): Sex {
     if (!value) {
       throw new Error('El sexo es requerido');
@@ -25,6 +28,25 @@ export class Sex {
     const validValue = this.parseFromString(value);
     if (!validValue) {
       throw new Error(`Sexo inválido: ${value}. Valores permitidos: Masculino, Femenino, Otro`);
+    }
+
+    return new Sex(validValue);
+  }
+
+  /**
+   * Reconstruye un Sex desde persistencia (PARA DATOS DE BD - Validación permisiva)
+   * Tolera valores inesperados usando valor por defecto
+   */
+  static fromPersistence(value: string): Sex {
+    if (!value || typeof value !== 'string') {
+      console.warn('[Sex.fromPersistence] Sexo vacío, usando valor por defecto');
+      return new Sex(SexEnum.OTHER);
+    }
+
+    const validValue = this.parseFromString(value);
+    if (!validValue) {
+      console.warn(`[Sex.fromPersistence] Sexo "${value}" no reconocido, usando valor por defecto`);
+      return new Sex(SexEnum.OTHER);
     }
 
     return new Sex(validValue);

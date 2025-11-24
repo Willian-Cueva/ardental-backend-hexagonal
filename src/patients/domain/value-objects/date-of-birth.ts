@@ -12,7 +12,7 @@ export class DateOfBirth {
   }
 
   /**
-   * Crea un DateOfBirth validado
+   * Crea un DateOfBirth validado (PARA NUEVOS DATOS - Validación estricta)
    * @param value - String con la fecha (formato ISO, YYYY-MM-DD o similar)
    * @throws Error si la fecha no es válida
    */
@@ -26,6 +26,27 @@ export class DateOfBirth {
     }
 
     return new DateOfBirth(value);
+  }
+
+  /**
+   * Reconstruye un DateOfBirth desde persistencia (PARA DATOS DE BD - Validación permisiva)
+   * Tolera fechas inválidas usando valor por defecto
+   * @param value - String con la fecha desde la base de datos
+   */
+  static fromPersistence(value: string): DateOfBirth {
+    if (!value || typeof value !== 'string') {
+      console.warn('[DateOfBirth.fromPersistence] Fecha vacía o inválida, usando valor por defecto');
+      return new DateOfBirth('1900-01-01');
+    }
+
+    // Verificar si la fecha es válida
+    if (this.isValid(value)) {
+      return new DateOfBirth(value);
+    }
+
+    // Si no es válida, usar fecha por defecto
+    console.warn(`[DateOfBirth.fromPersistence] Fecha "${value}" inválida, usando valor por defecto`);
+    return new DateOfBirth('1900-01-01');
   }
 
   /**

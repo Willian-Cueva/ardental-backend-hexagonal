@@ -18,6 +18,9 @@ export class MaritalStatus {
     this.value = value;
   }
 
+  /**
+   * Crea un MaritalStatus validado (PARA NUEVOS DATOS - Validación estricta)
+   */
   static create(value: string): MaritalStatus {
     if (!value) {
       throw new Error('El estado civil es requerido');
@@ -26,6 +29,25 @@ export class MaritalStatus {
     const validValue = this.parseFromString(value);
     if (!validValue) {
       throw new Error(`Estado civil inválido: ${value}. Valores permitidos: Soltero/a, Casado/a, Divorciado/a, Viudo/a`);
+    }
+
+    return new MaritalStatus(validValue);
+  }
+
+  /**
+   * Reconstruye un MaritalStatus desde persistencia (PARA DATOS DE BD - Validación permisiva)
+   * Tolera valores inesperados usando valor por defecto
+   */
+  static fromPersistence(value: string): MaritalStatus {
+    if (!value || typeof value !== 'string') {
+      console.warn('[MaritalStatus.fromPersistence] Estado civil vacío, usando valor por defecto');
+      return new MaritalStatus(MaritalStatusEnum.SINGLE);
+    }
+
+    const validValue = this.parseFromString(value);
+    if (!validValue) {
+      console.warn(`[MaritalStatus.fromPersistence] Estado civil "${value}" no reconocido, usando valor por defecto`);
+      return new MaritalStatus(MaritalStatusEnum.SINGLE);
     }
 
     return new MaritalStatus(validValue);

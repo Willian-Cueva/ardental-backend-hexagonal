@@ -12,7 +12,7 @@ export class Phone {
   }
 
   /**
-   * Crea un Phone validado
+   * Crea un Phone validado (PARA NUEVOS DATOS - Validación estricta)
    * @param value - String de 10 dígitos
    * @throws Error si el teléfono no es válido
    */
@@ -26,6 +26,44 @@ export class Phone {
     }
 
     return new Phone(value);
+  }
+
+  /**
+   * Reconstruye un Phone desde persistencia (PARA DATOS DE BD - Validación permisiva)
+   * Tolera datos legacy con formato incorrecto mediante normalización
+   * @param value - String con el teléfono desde la base de datos
+   */
+  static fromPersistence(value: string): Phone {
+    if (!value || typeof value !== 'string') {
+      console.warn('[Phone.fromPersistence] Teléfono vacío o inválido, usando valor por defecto');
+      return new Phone('0000000000');
+    }
+
+    // Normalizar: eliminar espacios y caracteres no numéricos
+    const normalized = value.trim().replace(/\D/g, '');
+
+    // Si después de normalizar está vacío, usar valor por defecto
+    if (normalized.length === 0) {
+      console.warn(`[Phone.fromPersistence] Teléfono "${value}" no contiene dígitos, usando valor por defecto`);
+      return new Phone('0000000000');
+    }
+
+    // Si tiene menos de 10 dígitos, hacer padding con ceros a la izquierda
+    if (normalized.length < 10) {
+      const padded = normalized.padStart(10, '0');
+      console.warn(`[Phone.fromPersistence] Teléfono "${value}" tiene ${normalized.length} dígitos, usando padding: ${padded}`);
+      return new Phone(padded);
+    }
+
+    // Si tiene más de 10 dígitos, tomar solo los primeros 10
+    if (normalized.length > 10) {
+      const truncated = normalized.substring(0, 10);
+      console.warn(`[Phone.fromPersistence] Teléfono "${value}" tiene ${normalized.length} dígitos, truncando a: ${truncated}`);
+      return new Phone(truncated);
+    }
+
+    // Exactamente 10 dígitos
+    return new Phone(normalized);
   }
 
   /**
